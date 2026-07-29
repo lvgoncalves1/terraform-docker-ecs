@@ -8,7 +8,7 @@ resource "aws_iam_role" "cargo" {
         Effect = "Allow"
         Sid    = ""
         Principal = {
-          Service = ["ec2.amazonaws.com", "ecs-tasks.amazonaws.co"]
+          Service = ["ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
         }
       },
     ]

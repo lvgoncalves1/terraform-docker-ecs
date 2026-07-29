@@ -1,10 +1,10 @@
 resource "aws_security_group" "alb" {
   name        = "alb_ecs"
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
 }
 
 
-resource "aws_security_group_rule" "tcp_alb" {
+resource "aws_security_group_rule" "tcp_alb_in" {
   type              = "ingress"
   from_port         = 8000
   to_port           = 8000
@@ -13,7 +13,7 @@ resource "aws_security_group_rule" "tcp_alb" {
   security_group_id = aws_security_group.alb.id
 }
 
-resource "aws_security_group_rule" "tcp_alb" {
+resource "aws_security_group_rule" "tcp_alb_out" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
@@ -24,7 +24,7 @@ resource "aws_security_group_rule" "tcp_alb" {
 
 resource "aws_security_group" "privado" {
   name        = "privado_ecs"
-  vpc_id      = module.vpc.default_vpc_id
+  vpc_id      = module.vpc.vpc_id
 }
 
 resource "aws_security_group_rule" "entrada_ecs" {
