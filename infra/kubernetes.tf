@@ -53,20 +53,25 @@ resource "kubernetes_deployment_v1" "Django-API" {
   }
 }
 
-
-resource "kubernetes_service" "LoadBalancer" {
+resource "kubernetes_service_v1" "LoadBalancer" {
   metadata {
     name = "load-balancer-django-api"
   }
+  
   spec {
     selector = {
         nome = "django"
     }
+    
     port {
       port        = 8000
-      target_port = 80
+      target_port = 8000
     }
 
     type = "LoadBalancer"
   }
+}
+
+output "URL" {
+  value = kubernetes_service_v1.LoadBalancer.status.0.load_balancer.0.ingress.0.hostname
 }
