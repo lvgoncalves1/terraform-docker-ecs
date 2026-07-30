@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "Django-API" {
+resource "kubernetes_deployment_v1" "Django-API" {
   metadata {
     name = "django-api"
     labels = {
@@ -40,13 +40,8 @@ resource "kubernetes_deployment" "Django-API" {
 
           liveness_probe {
             http_get {
-              path = "/"
-              port = 80
-
-              http_header {
-                name  = "X-Custom-Header"
-                value = "Awesome"
-              }
+              path = "/clientes"
+              port = 8000
             }
 
             initial_delay_seconds = 3
@@ -55,5 +50,23 @@ resource "kubernetes_deployment" "Django-API" {
         }
       }
     }
+  }
+}
+
+
+resource "kubernetes_service" "LoadBalancer" {
+  metadata {
+    name = "load-balancer-django-api"
+  }
+  spec {
+    selector = {
+        nome = "django"
+    }
+    port {
+      port        = 8000
+      target_port = 80
+    }
+
+    type = "LoadBalancer"
   }
 }
