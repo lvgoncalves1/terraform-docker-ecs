@@ -1,8 +1,7 @@
 resource "aws_security_group" "ssh-cluster" {
-  name        = "ssh-cluster"
-  vpc_id      = module.vpc.vpc_id
+  name   = "ssh-cluster"
+  vpc_id = module.vpc.vpc_id
 }
-
 
 resource "aws_security_group_rule" "ssh-cluster-in" {
   type              = "ingress"
@@ -23,20 +22,20 @@ resource "aws_security_group_rule" "ssh-cluster-out" {
 }
 
 resource "aws_security_group" "privado" {
-  name        = "privado_ecs"
-  vpc_id      = module.vpc.vpc_id
+  name   = "privado_eks"
+  vpc_id = module.vpc.vpc_id
 }
 
-resource "aws_security_group_rule" "entrada_ecs" {
-  type              = "ingress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = "-1"
-  source_security_group_id = aws_security_group.alb.id
-  security_group_id = aws_security_group.privado.id
+resource "aws_security_group_rule" "entrada_eks" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  source_security_group_id = aws_security_group.ssh-cluster.id
+  security_group_id        = aws_security_group.privado.id
 }
 
-resource "aws_security_group_rule" "saida_ecs" {
+resource "aws_security_group_rule" "saida_eks" {
   type              = "egress"
   from_port         = 0
   to_port           = 0
